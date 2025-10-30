@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<meta name="google" content="notranslate"><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -74,8 +74,6 @@
       font-size: 14px;
       margin-top: 10px;
     }
-    #search-box { margin-top: 10px; display: flex; gap: 8px; }
-    #image-upload { margin-top: 10px; }
     nav {
       background: #172554;
       display: flex;
@@ -117,10 +115,6 @@
   <!-- Chat Page -->
   <div id="chat-page">
     <h3 id="welcome"></h3>
-    <div id="search-box">
-      <input type="text" id="search" placeholder="Search questions, notes, papers..." />
-      <button onclick="searchQuestions()">Search</button>
-    </div>
     <input type="file" id="image-upload" accept="image/*" onchange="uploadImage(event)" />
     <div id="chat-container"></div>
     <div style="display:flex; gap:8px; margin-top:10px;">
@@ -172,7 +166,7 @@
       setTimeout(() => {
         const reply = getAIResponse(text);
         addMessage(reply, 'bot');
-      }, 700);
+      }, 600);
     }
 
     function addMessage(text, sender) {
@@ -185,26 +179,26 @@
 
     function getAIResponse(input) {
       const q = input.toLowerCase();
-      if (q.includes('math')) return '📐 Important Math: Pythagoras theorem, Trigonometry, Areas & Volumes.';
-      if (q.includes('science')) return '🧪 Science: Photosynthesis, Gravitation, Acids & Bases, Electricity.';
-      if (q.includes('social')) return '📜 Social Science: Nationalism in Europe, Resources, Democracy.';
-      if (q.includes('english')) return '📘 English: Grammar rules, Letter Writing, Poem meanings.';
-      if (q.includes('hindi')) return '📝 Hindi: Kabir ke dohe, Vyakaran, Nibandh likhan.';
-      if (q.includes('sanskrit')) return '📖 Sanskrit: Subhashitani, Sandhi, Shabd roop aur Dhatu roop.';
-      if (q.includes('computer')) return '💻 Computer: HTML basics, Internet, MS Office, AI intro.';
-      if (q.includes('question') || q.includes('paper')) return '📄 Previous Year Papers: Visit https://www.mpbse.nic.in/';
-      return 'UMA 🤖: Please ask about Math, Science, Social, or any MP Board subject!';
-    }
+      
+      // General subjects
+      if (q.includes('math')) return '📐 Maths: Pythagoras theorem, Trigonometry, Areas & Volumes are very important.';
+      if (q.includes('science')) return '🧪 Science: Study Gravitation, Acids & Bases, Electricity, and Life Processes.';
+      if (q.includes('social')) return '📜 Social Science: Nationalism in Europe, Resources, and Democracy are key topics.';
+      if (q.includes('english')) return '📘 English: Focus on Grammar, Writing skills, and Poem meanings.';
+      if (q.includes('hindi')) return '📝 Hindi: Kabir ke Dohe, Vyakaran aur Nibandh likhan par dhyaan do.';
+      if (q.includes('sanskrit')) return '📖 Sanskrit: Shabd roop, Dhatu roop, and Subhashitani practice karo.';
+      if (q.includes('computer')) return '💻 Computer: Learn HTML, Internet basics, and MS Office.';
 
-    function searchQuestions() {
-      const q = document.getElementById('search').value.toLowerCase();
-      if (!q) return addMessage('Please type something to search 🔍', 'bot');
-      let res = '';
-      if (q.includes('math')) res = 'Math Qs: Explain Pythagoras theorem, What is trigonometry?';
-      else if (q.includes('science')) res = 'Science Qs: Define photosynthesis. Explain Newton laws.';
-      else if (q.includes('social')) res = 'Social Qs: Define democracy. What is federalism?';
-      else res = 'No exact match found. Try other keywords!';
-      addMessage('🔍 Search Result: ' + res, 'bot');
+      // Real definitions & answers
+      if (q.includes('liberalism')) return '🧠 Liberalism means freedom and equality — it supports individual rights and free economy.';
+      if (q.includes('nationalism')) return '🇮🇳 Nationalism means love and pride for one’s country, and the desire for its freedom or unity.';
+      if (q.includes('democracy')) return '🗳️ Democracy is a system of government where people choose their leaders through elections.';
+      if (q.includes('constitution')) return '📜 The Constitution is the supreme law that defines how a country is governed.';
+      if (q.includes('photosynthesis')) return '🌿 Photosynthesis is the process by which plants make food using sunlight, CO₂, and water.';
+      if (q.includes('electricity')) return '⚡ Electricity is the flow of electric charge, used to power devices and machines.';
+
+      // Fallback
+      return 'UMA 🤖: Please ask about any MP Board subject or concept. Example: "What is liberalism?"';
     }
 
     function uploadImage(event) {
@@ -212,9 +206,9 @@
       if (!file) return;
       addMessage('📸 Uploaded: ' + file.name, 'user');
       setTimeout(() => {
-        addMessage('UMA 🤖: I cannot read images yet, but soon I will identify questions from them!', 'bot');
+        addMessage('UMA 🤖: I can’t read images yet, but soon I will scan and answer your image questions!', 'bot');
       }, 800);
     }
   </script>
 </body>
-</html>
+  </html>
