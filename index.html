@@ -1,194 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MP Board Helper | AI Chat</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MP Board Helper AI - Created by Ujjwal Khade</title>
   <style>
-    * { box-sizing: border-box; }
     body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0d1b2a, #1b263b);
+      color: white;
       margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(to bottom right, #007bff, #00d4ff);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      align-items: center;
-      justify-content: center;
+      padding: 0;
     }
-    .chat-container {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      width: 90%;
-      max-width: 450px;
-      height: 85vh;
-      display: flex;
-      flex-direction: column;
+    header {
+      background: #1e3a8a;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    #login-page, #chat-page, #about-page {
+      display: none;
+      padding: 20px;
+    }
+    #login-page.active, #chat-page.active, #about-page.active {
+      display: block;
+    }
+    input, button {
+      width: 100%;
       padding: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    }
-    .chat-box {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .message {
-      max-width: 80%;
-      padding: 10px 15px;
-      border-radius: 15px;
-      white-space: pre-line;
-    }
-    .user {
-      align-self: flex-end;
-      background: #ffffff;
-      color: #007bff;
-    }
-    .bot {
-      align-self: flex-start;
-      background: #006de2;
-      color: white;
-    }
-    .input-box {
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-    }
-    input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
       border: none;
-      outline: none;
+      border-radius: 8px;
+      margin-top: 10px;
       font-size: 16px;
     }
+    input {
+      background: #1e293b;
+      color: white;
+    }
     button {
-      background: white;
-      color: #007bff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
+      background: #3b82f6;
+      color: white;
       font-weight: bold;
       cursor: pointer;
     }
-    .typing {
-      font-style: italic;
-      opacity: 0.8;
-      animation: blink 1s infinite;
+    button:hover {
+      background: #2563eb;
     }
-    @keyframes blink {
-      50% { opacity: 0.4; }
+    #chat-container {
+      margin-top: 15px;
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 15px;
+      height: 55vh;
+      overflow-y: auto;
     }
+    .message {
+      padding: 10px;
+      border-radius: 10px;
+      margin: 8px 0;
+      width: fit-content;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .user { background: #3b82f6; margin-left: auto; }
+    .bot { background: #1e293b; margin-right: auto; }
     footer {
       text-align: center;
-      font-size: 13px;
-      opacity: 0.8;
+      background: #1e3a8a;
+      padding: 10px;
+      font-size: 14px;
       margin-top: 10px;
-    }footer {
-    text-align: center;
-    font-size: 13px;
-    opacity: 0.8;
-    margin-top: 10px;
-}
-
-/* 🔹 Remove Google Translate popup and text */
-.goog-te-banner-frame.skiptranslate, 
-.goog-logo-link, 
-.goog-te-gadget span, 
-.goog-te-balloon-frame, 
-.goog-text-highlight {
-    display: none !important;
-}
-
-body {
-    top: 0px !important;
-}
-
-/* 🔹 Hide unwanted numbers or text below chat */
-footer span, 
-footer div, 
-footer p {
-    display: none !important;
-      }
+    }
+    #search-box { margin-top: 10px; display: flex; gap: 8px; }
+    #image-upload { margin-top: 10px; }
+    nav {
+      background: #172554;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav button:hover { color: #60a5fa; }
+    a.link {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+    a.link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-box" id="chatBox">
-      <div class="message bot">👋 Hello! I’m your MP Board Study Helper. Ask me any topic or chapter name.</div>
+  <header>📘 MP Board Helper AI</header>
+
+  <nav>
+    <button onclick="showPage('chat')">🏠 Home</button>
+    <button onclick="showPage('about')">ℹ️ About</button>
+  </nav>
+
+  <!-- Login Page -->
+  <div id="login-page" class="active">
+    <h2>Welcome Student 👋</h2>
+    <p>Login to continue</p>
+    <input type="text" id="name" placeholder="Enter your name" />
+    <input type="text" id="class" placeholder="Enter your class (e.g. 10th)" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Chat Page -->
+  <div id="chat-page">
+    <h3 id="welcome"></h3>
+    <div id="search-box">
+      <input type="text" id="search" placeholder="Search questions, notes, papers..." />
+      <button onclick="searchQuestions()">Search</button>
     </div>
-    <div class="input-box">
-      <input type="text" id="userInput" placeholder="Type your question...">
+    <input type="file" id="image-upload" accept="image/*" onchange="uploadImage(event)" />
+    <div id="chat-container"></div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <input type="text" id="user-input" placeholder="Ask UMA (AI) anything..." />
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
-  <footer>Created by <b>Ujjwal Khade</b> | Powered by AI ⚡</footer>
+
+  <!-- About Page -->
+  <div id="about-page">
+    <h2>About This App</h2>
+    <p><b>MP Board Helper AI</b> is a smart study assistant created by <b>Ujjwal Khade</b> for MP Board students.</p>
+    <ul>
+      <li>🤖 AI Chat to clear doubts</li>
+      <li>📚 Important Questions for all subjects</li>
+      <li>📄 Notes & Previous Year Papers</li>
+      <li>🖼️ Upload images for help</li>
+    </ul>
+    <p>Stay tuned for more updates!</p>
+  </div>
+
+  <footer>© 2025 Created by <b>Ujjwal Khade</b></footer>
 
   <script>
-    const chatBox = document.getElementById("chatBox");
-
-    function addMessage(text, sender) {
-      const msg = document.createElement("div");
-      msg.classList.add("message", sender);
-      msg.textContent = text;
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    function showPage(page) {
+      document.getElementById('chat-page').classList.remove('active');
+      document.getElementById('login-page').classList.remove('active');
+      document.getElementById('about-page').classList.remove('active');
+      document.getElementById(page + '-page').classList.add('active');
     }
+
+    function login() {
+      const name = document.getElementById('name').value.trim();
+      const cls = document.getElementById('class').value.trim();
+      if (!name || !cls) return alert('Please fill all fields!');
+      document.getElementById('login-page').classList.remove('active');
+      document.getElementById('chat-page').classList.add('active');
+      document.getElementById('welcome').innerText = `Welcome ${name} (Class ${cls}) 👋`;
+    }
+
+    const chatContainer = document.getElementById('chat-container');
 
     function sendMessage() {
-      const input = document.getElementById("userInput");
+      const input = document.getElementById('user-input');
       const text = input.value.trim();
-      if (!text) return;
-      addMessage(text, "user");
-      input.value = "";
-
-      addTyping();
+      if (text === '') return;
+      addMessage(text, 'user');
+      input.value = '';
       setTimeout(() => {
-        removeTyping();
-        generateResponse(text);
-      }, 1200);
+        const reply = getAIResponse(text);
+        addMessage(reply, 'bot');
+      }, 700);
     }
 
-    function addTyping() {
-      const typing = document.createElement("div");
-      typing.classList.add("message", "bot", "typing");
-      typing.id = "typing";
-      typing.textContent = "AI is typing...";
-      chatBox.appendChild(typing);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      msg.innerText = text;
+      chatContainer.appendChild(msg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    function removeTyping() {
-      const typing = document.getElementById("typing");
-      if (typing) typing.remove();
+    function getAIResponse(input) {
+      const q = input.toLowerCase();
+      if (q.includes('math')) return '📐 Important Math: Pythagoras theorem, Trigonometry, Areas & Volumes.';
+      if (q.includes('science')) return '🧪 Science: Photosynthesis, Gravitation, Acids & Bases, Electricity.';
+      if (q.includes('social')) return '📜 Social Science: Nationalism in Europe, Resources, Democracy.';
+      if (q.includes('english')) return '📘 English: Grammar rules, Letter Writing, Poem meanings.';
+      if (q.includes('hindi')) return '📝 Hindi: Kabir ke dohe, Vyakaran, Nibandh likhan.';
+      if (q.includes('sanskrit')) return '📖 Sanskrit: Subhashitani, Sandhi, Shabd roop aur Dhatu roop.';
+      if (q.includes('computer')) return '💻 Computer: HTML basics, Internet, MS Office, AI intro.';
+      if (q.includes('question') || q.includes('paper')) return '📄 Previous Year Papers: Visit https://www.mpbse.nic.in/';
+      return 'UMA 🤖: Please ask about Math, Science, Social, or any MP Board subject!';
     }
 
-    function generateResponse(userText) {
-      userText = userText.toLowerCase();
-      let response = "";
+    function searchQuestions() {
+      const q = document.getElementById('search').value.toLowerCase();
+      if (!q) return addMessage('Please type something to search 🔍', 'bot');
+      let res = '';
+      if (q.includes('math')) res = 'Math Qs: Explain Pythagoras theorem, What is trigonometry?';
+      else if (q.includes('science')) res = 'Science Qs: Define photosynthesis. Explain Newton laws.';
+      else if (q.includes('social')) res = 'Social Qs: Define democracy. What is federalism?';
+      else res = 'No exact match found. Try other keywords!';
+      addMessage('🔍 Search Result: ' + res, 'bot');
+    }
 
-      if (userText.includes("history") && userText.includes("chapter 1")) {
-        response = "📖 *The Rise of Nationalism in Europe*\nKey Points:\n• French Revolution\n• Nation-State Formation\n• Unification of Italy & Germany";
-      } 
-      else if (userText.includes("science") && userText.includes("chapter 1")) {
-        response = "🧪 *Chemical Reactions and Equations*\nTopics:\n• Types of Reactions\n• Balancing Equations\n• Corrosion and Rancidity";
-      }
-      else if (userText.includes("geography") && userText.includes("chapter 1")) {
-        response = "🌍 *Resources and Development*\n• Types of Resources\n• Resource Planning\n• Soil Erosion and Conservation";
-      }
-      else {
-        response = "🤖 Sorry, I don’t have info on that topic yet. Try ‘Science Chapter 1’ or ‘History Chapter 1’.";
-      }
-
-      addMessage(response, "bot");
+    function uploadImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      addMessage('📸 Uploaded: ' + file.name, 'user');
+      setTimeout(() => {
+        addMessage('UMA 🤖: I cannot read images yet, but soon I will identify questions from them!', 'bot');
+      }, 800);
     }
   </script>
 </body>
-    </html>
-    
-    
+</html>
